@@ -3,14 +3,14 @@ package llmprovider
 import "emergent/internal/common"
 
 func NewClaudeProvider() LLMProviderIface {
-	return claude{}
+	return &claude{}
 }
 
 type claude struct {
 	ErrCounter int
 }
 
-func (c claude) MakeRequest(request common.Request, count int) (common.Response, error) {
+func (c *claude) MakeRequest(request common.Request, count int) (common.Response, error) {
 	resp, err := ClaudeProvider(request, count)
 	if err != nil {
 		println("claude server returned an error")
@@ -23,10 +23,10 @@ func (c claude) MakeRequest(request common.Request, count int) (common.Response,
 	return resp, err
 }
 
-func (c claude) GetErrorCount() int {
+func (c *claude) GetErrorCount() int {
 	return c.ErrCounter
 }
 
-func (c claude) IsHealthy() bool {
+func (c *claude) IsHealthy() bool {
 	return c.ErrCounter <= 5
 }
